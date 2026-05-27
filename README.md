@@ -19,9 +19,9 @@ The purpose of this project is educational and research-oriented only. All testi
 The environment consists of three virtual machines:
 
 # VM & Purpose
-Kali Linux	> Attacker system used for reconnaissance, packet capture, MITM attacks, and exploitation
-OpenPLC	Simulated > PLC running Modbus TCP services
-Modbus HMI	> Human Machine Interface used to monitor and control PLC operations
+- Kali Linux	> Attacker system used for reconnaissance, packet capture, MITM attacks, and exploitation
+- OpenPLC	Simulated > PLC running Modbus TCP services
+- Modbus HMI	> Human Machine Interface used to monitor and control PLC operations
 
 # Authors 
 - Allison Felsheim
