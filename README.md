@@ -1,261 +1,318 @@
-# ICS Security Lab
+# ICS Security Lab – OpenPLC + AdvancedHMI + Modbus TCP
 
 ## Overview
 
-This project demonstrates offensive security analysis against a simulated SCADA/ICS environment using **OpenPLC**, **AdvancedHMI**, **Modbus TCP**, and Kali Linux tooling.
+This project demonstrates offensive security analysis against a simulated Industrial Control System (ICS) / SCADA environment using:
 
-The lab demonstrates three attack phases:
+* OpenPLC Runtime V3
+* AdvancedHMI
+* Modbus TCP
+* Kali Linux offensive tooling
 
-* **Attack 1:** PLC discovery and Modbus enumeration
-* **Attack 2:** Unauthorized Modbus register manipulation
-* **Attack 3:** Man-in-the-Middle interception and traffic manipulation
+The lab focuses on identifying and exploiting weaknesses commonly found in industrial environments, specifically around unauthenticated Modbus communication and insecure network trust relationships.
 
 ---
 
-# Repository Layout
+# Lab Objectives
 
-```text
+This project demonstrates three primary attack scenarios:
+
+## Attack 1 – PLC Discovery & Modbus Enumeration
+
+* Discover ICS devices on the network
+* Identify open industrial ports
+* Enumerate Modbus coils/registers
+* Identify PLC communication services
+
+## Attack 2 – Unauthorized Register Manipulation
+
+* Modify PLC register/coil values
+* Demonstrate unauthorized process manipulation
+* Show HMI state changes caused by attacker interaction
+
+## Attack 3 – Modbus Traffic Interception (MITM)
+
+* Intercept Modbus TCP traffic
+* Manipulate traffic in transit
+* Demonstrate how operators can receive misleading process data
+
+---
+
+# Lab Environment
+
+| System          | Purpose                    |
+| --------------- | -------------------------- |
+| OpenPLC Runtime | Simulated PLC              |
+| AdvancedHMI     | Operator HMI               |
+| Kali Linux      | Attacker Machine           |
+| Modbus TCP      | ICS Communication Protocol |
+
+---
+
+# Network Topology
+
+```text id="b36i3y"
++-------------------+
+|   Kali Linux VM   |
+|    (Attacker)     |
++-------------------+
+          |
+          | Modbus TCP / MITM
+          |
++-------------------+        +-------------------+
+|   OpenPLC Runtime | <----> |   AdvancedHMI     |
+|    Linux VM       |        |    Windows VM     |
++-------------------+        +-------------------+
+```
+
+---
+
+# Technologies Used
+
+## ICS / SCADA
+
+* OpenPLC Runtime V3
+* AdvancedHMI
+* Modbus TCP
+
+## Offensive Security Tools
+
+* Nmap
+* Modbus scanners
+* Ettercap
+* Bettercap
+* Scapy
+* Wireshark
+
+## Operating Systems
+
+* Ubuntu Linux
+* Windows
+* Kali Linux
+
+---
+
+# OpenPLC + HMI Configuration
+
+## Modbus TCP
+
+The OpenPLC runtime was configured to listen on:
+
+```text id="42pkmf"
+Port 502
+```
+
+AdvancedHMI connected using:
+
+```text id="6t2k0h"
+IPAddress = <PLC_IP>
+Port = 502
+```
+
+---
+
+# PLC Program
+
+```pascal id="b3e4om"
+PROGRAM PLC_PRG
+VAR
+    HMI_Button AT %QX0.0 : BOOL;
+END_VAR
+
+HMI_Button := HMI_Button;
+
+END_PROGRAM
+
+CONFIGURATION Config0
+    RESOURCE Res0 ON PLC
+        TASK Main(INTERVAL := T#100ms, PRIORITY := 0);
+        PROGRAM Inst0 WITH Main : PLC_PRG;
+    END_RESOURCE
+END_CONFIGURATION
+```
+
+---
+
+# Attack Demonstrations
+
+# Attack 1 – PLC Discovery & Enumeration
+
+## Goal
+
+Identify the PLC on the network and enumerate Modbus information.
+
+## Demonstrated Concepts
+
+* ICS asset discovery
+* Open Modbus TCP services
+* Register/coils enumeration
+* Industrial reconnaissance
+
+## Tools Used
+
+* Nmap
+* Modbus scanners
+* Wireshark
+
+## Evidence
+
+* Open port 502 discovery
+* Modbus enumeration screenshots
+* Register mapping results
+
+---
+
+# Attack 2 – Unauthorized Register Manipulation
+
+## Goal
+
+Demonstrate how attackers can modify PLC process values through Modbus writes.
+
+## Scenario
+
+A simulated water level process was represented through PLC variables and HMI indicators.
+
+The attacker:
+
+* Connected directly to the PLC
+* Modified Modbus register/coil values
+* Caused the HMI to display altered process conditions
+
+## Demonstrated Concepts
+
+* Lack of Modbus authentication
+* Unauthorized PLC control
+* HMI trust in PLC data
+
+## Evidence
+
+* Register write commands
+* HMI state changes
+* Packet captures of Modbus writes
+
+---
+
+# Attack 3 – Modbus MITM Traffic Manipulation
+
+## Goal
+
+Intercept and manipulate Modbus TCP traffic between the HMI and PLC.
+
+## Scenario
+
+Traffic between AdvancedHMI and OpenPLC was intercepted using MITM tooling.
+
+The attacker:
+
+* Positioned between the PLC and HMI
+* Observed Modbus traffic
+* Manipulated values in transit
+
+## Demonstrated Concepts
+
+* Unencrypted ICS traffic
+* ARP spoofing/MITM attacks
+* Traffic manipulation risks
+* False operator visibility
+
+## Tools Used
+
+* Ettercap
+* Bettercap
+* Scapy
+* Wireshark
+
+## Evidence
+
+* MITM packet captures
+* Modified Modbus traffic
+* PLC/HMI behavior differences
+
+---
+
+# Key Lessons Learned
+
+## Industrial Protocol Security
+
+* Modbus TCP does not provide encryption or authentication by default.
+* PLCs may trust any host capable of reaching port 502.
+* HMI systems can display manipulated values if network traffic is altered.
+
+---
+
+## Network Security
+
+* Flat industrial networks increase attack surface.
+* ICS protocols should be segmented and monitored.
+* Unauthorized hosts should not have direct PLC access.
+
+---
+
+## Defensive Considerations
+
+Potential mitigations include:
+
+* Network segmentation
+* Firewall restrictions
+* Industrial IDS/IPS monitoring
+* Protocol-aware monitoring
+* VLAN separation
+* Secure remote access controls
+
+---
+
+# Useful Commands
+
+## Check Listening Ports
+
+```bash id="9km6rm"
+ss -tulpn | grep 502
+```
+
+## Start OpenPLC Runtime
+
+```bash id="k3v8sh"
+./openplc
+```
+
+## Kill Existing Runtime
+
+```bash id="z9n3oq"
+sudo pkill -f openplc
+```
+
+## Start OpenPLC Webserver
+
+```bash id="e0nn9w"
+python3 webserver.py
+```
+
+---
+
+# Repository Structure
+
+```text id="k4cmxw"
 ics-security-lab/
 │
 ├── README.md
-│
 ├── docs/
-│   ├── 00-lab-overview.md
-│   ├── 01-network-topology.md
-│   ├── 02-openplc-advancedhmi-setup.md
-│   ├── 03-troubleshooting-notes.md
-│   └── 04-lessons-learned.md
-│
 ├── attacks/
-│   ├── attack-1-discovery-enumeration.md
-│   ├── attack-2-register-manipulation.md
-│   └── attack-3-mitm-modbus-interception.md
-│
 ├── screenshots/
-│   ├── setup/
-│   ├── attack-1-discovery/
-│   ├── attack-2-register-change/
-│   └── attack-3-mitm/
-│
 ├── pcaps/
-│   ├── baseline-traffic/
-│   ├── attack-2-register-write/
-│   └── attack-3-mitm/
-│
 ├── scripts/
-│   ├── modbus-read/
-│   ├── modbus-write/
-│   └── mitm/
-│
 └── configs/
-    ├── openplc/
-    └── advancedhmi/
 ```
 
 ---
 
-# README.md Outline
+# Conclusion
 
-## Project Summary
+This lab successfully demonstrated:
 
-This lab simulates a small industrial control system using OpenPLC as the PLC runtime and AdvancedHMI as the operator interface. Kali Linux is used as the attacker machine to perform discovery, enumeration, unauthorized Modbus interaction, and MITM traffic manipulation.
+* PLC discovery and enumeration
+* Modbus TCP communication analysis
+* Unauthorized PLC manipulation
+* MITM interception of industrial traffic
+* Real-world weaknesses in ICS environments
 
-## Lab Components
-
-| Component       | Purpose                           |
-| --------------- | --------------------------------- |
-| OpenPLC Runtime | Simulated PLC                     |
-| AdvancedHMI     | Operator HMI                      |
-| Kali Linux      | Attacker system                   |
-| Modbus TCP      | Industrial communication protocol |
-
-## Attack Demonstrations
-
-### Attack 1: PLC Discovery and Enumeration
-
-Goal:
-
-* Discover the PLC
-* Identify open ICS ports
-* Enumerate Modbus registers/coils
-
-Evidence to include:
-
-* Nmap scan output
-* Modbus scanner results
-* Screenshots of open port 502
-* Register/coil enumeration results
-
----
-
-### Attack 2: Unauthorized Register Manipulation
-
-Goal:
-
-* Simulate an attacker changing a PLC value
-* Demonstrate how unauthorized writes can affect HMI readings
-
-Example scenario:
-
-* PLC represents a water level system
-* HMI displays normal/high/low level
-* Attacker changes Modbus coil/register values
-* HMI reflects manipulated state
-
-Evidence to include:
-
-* Before/after HMI screenshots
-* Register write command output
-* Wireshark capture of Modbus write traffic
-
----
-
-### Attack 3: MITM Modbus Traffic Manipulation
-
-Goal:
-
-* Intercept Modbus traffic between HMI and PLC
-* Demonstrate how traffic can be observed or altered in transit
-
-Example scenario:
-
-* Operator sees normal process values
-* PLC receives altered values
-* Attacker manipulates Modbus traffic using MITM tooling
-
-Evidence to include:
-
-* ARP spoofing/MITM setup screenshot
-* Wireshark capture of intercepted Modbus traffic
-* Before/after PLC/HMI behavior
-* Notes explaining impact
-
----
-
-# Documentation Files
-
-## docs/00-lab-overview.md
-
-Include:
-
-* Project purpose
-* What ICS/SCADA means
-* Why Modbus is insecure by default
-* Lab safety/authorization note
-
-## docs/01-network-topology.md
-
-Include:
-
-```text
-Kali Attacker VM
-        |
-        | same virtual network
-        |
-OpenPLC VM  <---- Modbus TCP ---->  Windows AdvancedHMI VM
-```
-
-Include IP table:
-
-| System     | Role     |
-| ---------- | -------- |
-| Kali       | Attacker |
-| OpenPLC    | PLC      |
-| Windows VM | HMI      |
-
-## docs/02-openplc-advancedhmi-setup.md
-
-Include:
-
-* OpenPLC installation notes
-* AdvancedHMI configuration
-* ModbusTCPCom settings
-* Button and pilot light settings
-
-## docs/03-troubleshooting-notes.md
-
-Include:
-
-* OpenPLC v4 issues
-* Why v3 was selected
-* Python dependency fixes
-* Port 502 permission issue
-* Final successful configuration
-
-## docs/04-lessons-learned.md
-
-Include:
-
-* Modbus has no built-in authentication
-* PLCs can trust unauthorized writes
-* HMI values can be manipulated
-* Network segmentation and monitoring are important
-
----
-
-# Attack Note Template
-
-Use this format for each attack file:
-
-```markdown
-# Attack X: Title
-
-## Objective
-What this attack demonstrates.
-
-## Tools Used
-- Tool 1
-- Tool 2
-- Tool 3
-
-## Lab Setup
-- PLC IP:
-- HMI IP:
-- Attacker IP:
-
-## Steps Performed
-1. Step one
-2. Step two
-3. Step three
-
-## Results
-Explain what happened.
-
-## Evidence
-- Screenshot filename
-- PCAP filename
-- Command output
-
-## Security Impact
-Explain why this matters in ICS environments.
-
-## Defensive Recommendations
-- Network segmentation
-- Disable unnecessary services
-- Monitor Modbus traffic
-- Restrict access to PLC ports
-```
-
----
-
-# Final Result
-
-By the end of the lab, the environment demonstrates:
-
-* A working OpenPLC and AdvancedHMI setup
-* Modbus TCP communication on port 502
-* PLC discovery using network scanning
-* Register/coil enumeration
-* Unauthorized Modbus manipulation
-* MITM-based traffic interception
-* Practical ICS security risks and mitigations
-
----
-
-# Key Takeaways
-
-* Modbus TCP is easy to inspect because it is unencrypted.
-* PLCs may accept commands from unauthorized systems if network access is not restricted.
-* HMI displays can be influenced by manipulated process values.
-* ICS environments require strong segmentation, monitoring, and access control.
-* Offensive testing in a lab helps demonstrate why industrial protocols need layered defenses.
+The project provided hands-on experience with industrial protocols, HMI integration, offensive security tooling, and defensive considerations relevant to modern ICS/SCADA systems.
