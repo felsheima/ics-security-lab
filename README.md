@@ -157,11 +157,11 @@ OpenPLC VM  <---- Modbus TCP ---->  Windows AdvancedHMI VM
 
 Include IP table:
 
-| System     | IP Address     | Role     |
-| ---------- | -------------- | -------- |
-| Kali       | TBD            | Attacker |
-| OpenPLC    | 192.168.86.219 | PLC      |
-| Windows VM | TBD            | HMI      |
+| System     | Role     |
+| ---------- | -------- |
+| Kali       | Attacker |
+| OpenPLC    | PLC      |
+| Windows VM | HMI      |
 
 ## docs/02-openplc-advancedhmi-setup.md
 
