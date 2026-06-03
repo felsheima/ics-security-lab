@@ -33,9 +33,13 @@ The scan did not return any active hosts. This demonstrated an important lesson:
 
 ### Figure 1
 
+![Figure 1 - Identifying local network inforamtion](.../screenshots/attack1-figure1-ipa.png)
+
 *Identifying local network information using the `ip a` command.*
 
 ### Figure 1
+
+![Figure 1 - Demonstration on the limitations of ICMP discovery](.../screenshots/attack1-figure1-ipa.png)
 
 *Host discovery scan returning no results, demonstrating the limitations of ICMP-based discovery.*
 
@@ -77,6 +81,8 @@ At this point I could conclude:
 
 ### Figure 3
 
+![Figure 3 - Identifying exposed Modbus](.../screenshots/attack1-figure3-modbus-discovery.png)
+
 *Service detection identifying an exposed Modbus TCP service on port 502.*
 
 ---
@@ -114,6 +120,8 @@ This was an important learning moment because it demonstrated that industrial pr
 
 ### Figure 4
 
+![Figure 4 - Using Netcat](../screenshots/attack1-figure4-netcat-test.png)
+
 *Attempting to interact with Modbus using Netcat and learning why protocol-specific tools are required.*
 
 ---
@@ -145,6 +153,8 @@ At this stage I had successfully:
 3. Confirmed the PLC responded to Modbus traffic.
 
 ### Figure 5
+
+![Figure 5 - Modbus TCP Discovery](../screenshots/attack1-figure5-modbus-scripts.png)
 
 *Modbus discovery script confirming protocol communication with the PLC.*
 
@@ -185,9 +195,13 @@ confirming that multiple coil addresses were exposed and accessible through Modb
 
 ### Figure 6
 
+![Figure 6 - Reading PLC coil](../screenshots/attack1-figure6+7-read-coils-correlation.png)
+
 *Reading PLC coil values using Metasploit.*
 
 ### Figure 7
+
+![Figure 7 - Reading PLC coil](../screenshots/attack1-figure6+7-read-coils-correlation.png)
 
 *Correlating coil values with HMI process indicators.*
 
@@ -226,9 +240,13 @@ The screenshots below show:
 
 ### Figure 8
 
+![Figure 8 Display of water level](../screenshots/attack1-figure8-water-level-hmi.png)
+
 *AdvancedHMI displaying a simulated water-level value.*
 
 ### Figure 9
+
+![Figure 9 Reading the water level](../screenshots/attack1-figure9-water-level-register.png)
 
 *Reading the water-level holding register remotely through Modbus TCP.*
 
