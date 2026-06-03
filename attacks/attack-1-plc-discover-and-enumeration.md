@@ -197,9 +197,7 @@ confirming that multiple coil addresses were exposed and accessible through Modb
 
 ![Figure 6 - Reading PLC coil](../screenshots/attack1-figure6+7-read-coils-correlation.png)
 
-*Reading PLC coil values using Metasploit.*
-
-*Correlating coil values with HMI process indicators.*
+*Reading PLC coil values using Metasploit and correlating coil values with HMI process indicators.*
 
 ---
 
