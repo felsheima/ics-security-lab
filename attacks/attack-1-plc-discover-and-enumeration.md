@@ -39,7 +39,7 @@ The scan did not return any active hosts. This demonstrated an important lesson:
 
 ### Figure 2
 
-![Figure 2 - Host Discovery](../screenshots/attack1-figure2-host-discoverypng)
+![Figure 2 - Host Discovery](../screenshots/attack1-figure2-host-discover.png)
 
 *Host discovery scan returning no results, demonstrating the limitations of ICMP-based discovery.*
 
