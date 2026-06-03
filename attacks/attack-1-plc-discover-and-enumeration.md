@@ -81,7 +81,7 @@ At this point I could conclude:
 
 ### Figure 3
 
-![Figure 3 - Identifying exposed Modbus](.../screenshots/attack1-figure3-modbus-discovery.png)
+![Figure 3 - Identifying exposed Modbus](../screenshots/attack1-figure3-modbus-discovery.png)
 
 *Service detection identifying an exposed Modbus TCP service on port 502.*
 
