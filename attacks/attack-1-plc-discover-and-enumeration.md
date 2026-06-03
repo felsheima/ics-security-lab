@@ -154,7 +154,7 @@ At this stage I had successfully:
 
 ### Figure 5
 
-![Figure 5 - Modbus TCP Discovery](../screenshots/attack1-figure5-modbus-scripts.png)
+![Figure 5 - Modbus TCP Discovery](../screenshots/attack1-figure5-modbus-script.png)
 
 *Modbus discovery script confirming protocol communication with the PLC.*
 
