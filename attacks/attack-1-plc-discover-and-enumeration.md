@@ -33,13 +33,13 @@ The scan did not return any active hosts. This demonstrated an important lesson:
 
 ### Figure 1
 
-![Figure 1 - Identifying local network inforamtion](.../screenshots/attack1-figure1-ipa.png)
+![Figure 1 - Identifying local network inforamtion](../screenshots/attack1-figure1-ipa.png)
 
 *Identifying local network information using the `ip a` command.*
 
 ### Figure 1
 
-![Figure 1 - Demonstration on the limitations of ICMP discovery](.../screenshots/attack1-figure1-ipa.png)
+![Figure 1 - Demonstration on the limitations of ICMP discovery](../screenshots/attack1-figure1-ipa.png)
 
 *Host discovery scan returning no results, demonstrating the limitations of ICMP-based discovery.*
 
