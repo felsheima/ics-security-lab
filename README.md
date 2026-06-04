@@ -59,9 +59,6 @@ ics-security-lab/
 ├── docs/
 ├── attacks/
 ├── screenshots/
-├── pcaps/
-├── scripts/
-└── configs/
 ```
 
 ---
