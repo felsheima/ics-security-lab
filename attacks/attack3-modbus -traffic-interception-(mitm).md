@@ -18,9 +18,17 @@ The Kali VM was configured to forward network traffic while ARP spoofing was per
 
 The Windows system was led to believe that Kali was the PLC, while the PLC was led to believe that Kali was the Windows HMI. As a result, communications between the two systems were transparently routed through the attacker machine.
 
-### Figure 1 – Kali Positioned Between HMI and PLC
+### Command - Set the kali VM to act like a router
 
-![Figure 1](screenshots/attack3-arpspoof.png)
+'''
+sudo sysctil -w net.ipv4.ip_forward=1
+'''
+
+### Command – Kali Positioned Between HMI and PLC
+
+'''
+sudo arpspoof -i eth0 -t <ip> <ip> 
+'''
 
 *ARP spoofing used to redirect communications through the Kali Linux attacker system.*
 
@@ -32,9 +40,9 @@ After the man-in-the-middle position was established, Wireshark was used to insp
 
 Analysis of the captured packets revealed Modbus requests and responses containing process information. One captured packet showed that Register 0 contained a value of 25.
 
-### Figure 2 – Captured Modbus Traffic
+### Figure 1 – Captured Modbus Traffic
 
-![Figure 2](screenshots/attack3-wireshark-modbus.png)
+![Figure 1](screenshots/attack3-figure1-wireshark-image.png)
 
 *Wireshark capture showing Modbus traffic exchanged between the HMI and PLC.*
 
