@@ -75,7 +75,7 @@ At this point I could conclude:
 * The target was likely functioning as a PLC or ICS device.
 * Modbus TCP was reachable from my system.
 
-### Figure 3
+### Figure 2
 
 ![Figure 3 - Identifying exposed Modbus](../screenshots/attack1-figure3-modbus-discovery.png)
 
@@ -114,7 +114,7 @@ This did not produce useful results because Modbus is not a text-based protocol.
 
 This was an important learning moment because it demonstrated that industrial protocols require protocol-aware tools and properly structured requests.
 
-### Figure 4
+### Figure 3
 
 ![Figure 4 - Using Netcat](../screenshots/attack1-figure4-netcat-test.png)
 
@@ -148,7 +148,7 @@ At this stage I had successfully:
 2. Verified Modbus TCP was running.
 3. Confirmed the PLC responded to Modbus traffic.
 
-### Figure 5
+### Figure 4
 
 ![Figure 5 - Modbus TCP Discovery](../screenshots/attack1-figure5-modbus-script.png)
 
@@ -189,7 +189,7 @@ Coil 1 = 0
 
 confirming that multiple coil addresses were exposed and accessible through Modbus TCP.
 
-### Figure 6
+### Figure 5
 
 ![Figure 6 - Reading PLC coil](../screenshots/attack1-figure6+7-read-coils-correlation.png)
 
@@ -228,13 +228,13 @@ The screenshots below show:
 1. The operator view within AdvancedHMI.
 2. The corresponding holding register value being retrieved through Metasploit.
 
-### Figure 8
+### Figure 6
 
 ![Figure 8 Display of water level](../screenshots/attack1-figure8-water-level-hmi.png)
 
 *AdvancedHMI displaying a simulated water-level value.*
 
-### Figure 9
+### Figure 7
 
 ![Figure 9 Reading the water level](../screenshots/attack1-figure9-water-level-register.png)
 
