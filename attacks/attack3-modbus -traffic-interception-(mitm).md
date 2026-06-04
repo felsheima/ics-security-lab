@@ -1,86 +1,75 @@
-# Attack 3 – Modbus Traffic Interception (Man-in-the-Middle)
+# Attack 3 – Modbus Traffic Interception
 
 ## Objective
 
-The goal of this attack was to demonstrate how an attacker on the same network can observe Modbus TCP communications between an HMI and PLC. This attack highlights the lack of encryption and authentication within the Modbus protocol and shows how process data can be exposed when network traffic is intercepted.
+The objective of this attack was to demonstrate how an attacker located on the same network can intercept communications between an HMI and PLC. By placing the attacker system between the two devices, Modbus TCP traffic could be observed and analyzed to identify process values being exchanged across the network.
 
 ## Attack Overview
 
-In the previous attacks, direct communication with the PLC was demonstrated through Modbus register reads and writes. For this attack, the focus shifted to observing communications exchanged between the HMI and PLC.
+In this attack, the Kali Linux virtual machine was configured to act as a router between the Windows HMI and Ubuntu PLC. ARP spoofing was used to convince each system that the Kali machine was the other endpoint in the communication path.
 
-The Kali Linux system was placed on the same network segment as the Windows HMI and Ubuntu PLC. Ettercap was used to discover hosts and establish a man-in-the-middle position between the communicating systems. Wireshark was then used to inspect the resulting Modbus traffic.
-
----
-
-## Host Discovery
-
-Ettercap was used to identify active hosts on the network. After starting network scanning, the host list displayed all detected systems on the subnet.
-
-The network gateway was selected as Target 1 and the PLC device was selected as Target 2. This configuration allowed traffic between the systems to be routed through the attacker machine for observation.
-
-### Figure 1 – Host Discovery and Target Selection
-
-![Figure 1](screenshots/attack3-host-discovery.png)
-
-*Ettercap identifying hosts and selecting targets for interception.*
+Once traffic was redirected through Kali, Wireshark was used to capture and analyze Modbus TCP communications between the HMI and PLC.
 
 ---
 
-## Traffic Interception
+## Establishing the Man-in-the-Middle Position
 
-After configuring the interception environment, the Kali VM was positioned between the Windows HMI and Ubuntu PLC. Traffic flowing between the two systems could then be observed using Wireshark.
+The Kali VM was configured to forward network traffic while ARP spoofing was performed against both the Windows HMI and Ubuntu PLC.
 
-During testing, the operator modified the simulated water level from the HMI interface. The resulting Modbus communications were captured and analyzed.
+The Windows system was led to believe that Kali was the PLC, while the PLC was led to believe that Kali was the Windows HMI. As a result, communications between the two systems were transparently routed through the attacker machine.
 
-### Figure 2 – Traffic Interception Setup
+### Figure 1 – Kali Positioned Between HMI and PLC
 
-![Figure 2](screenshots/attack3-mitm-setup.png)
+![Figure 1](screenshots/attack3-arpspoof.png)
 
-*Attacker system positioned between the HMI and PLC to observe network traffic.*
-
----
-
-## Packet Analysis
-
-Wireshark was configured to monitor Modbus TCP traffic on port 502. Inspection of the captured packets revealed Modbus function code activity associated with reading holding registers.
-
-One captured packet showed Register 0 containing a value of 25, which corresponded directly to the water level displayed on the HMI. This demonstrated that process values were transmitted across the network in clear text and could be observed by an attacker with network access.
-
-### Figure 3 – Captured Modbus Packet
-
-![Figure 3](screenshots/attack3-modbus-packet.png)
-
-*Wireshark displaying Modbus traffic containing process values from Register 0.*
+*ARP spoofing used to redirect communications through the Kali Linux attacker system.*
 
 ---
 
-## HMI Correlation
+## Capturing Modbus Traffic
 
-The value observed within the captured Modbus packet matched the value displayed on the HMI interface. Register 0 contained the value 25, and the HMI simultaneously displayed a water level of 25%.
+After the man-in-the-middle position was established, Wireshark was used to inspect Modbus TCP traffic flowing between the HMI and PLC.
 
-This correlation confirmed that operational process data could be extracted directly from network traffic without requiring authentication or privileged access to the PLC.
+Analysis of the captured packets revealed Modbus requests and responses containing process information. One captured packet showed that Register 0 contained a value of 25.
 
-### Figure 4 – HMI Display Showing Water Level
+### Figure 2 – Captured Modbus Traffic
 
-![Figure 4](screenshots/attack3-hmi-water-level.png)
+![Figure 2](screenshots/attack3-wireshark-modbus.png)
 
-*AdvancedHMI displaying a water level value that matches the intercepted Modbus traffic.*
+*Wireshark capture showing Modbus traffic exchanged between the HMI and PLC.*
+
+---
+
+## Correlating Network Traffic with Process Data
+
+The value observed in the Modbus packet was compared to the value displayed on the HMI.
+
+The packet capture showed Register 0 containing a value of 25, while the HMI simultaneously displayed a water level of 25%.
+
+This demonstrated that process values were being transmitted across the network in clear text and could be observed by an attacker with network access.
+
+### Figure 3 – HMI Display
+
+![Figure 3](screenshots/attack3-waterlevel25.png)
+
+*AdvancedHMI displaying a water level of 25%, matching the value observed within the Modbus packet capture.*
 
 ---
 
 ## Security Impact
 
-This attack demonstrates a significant weakness in Modbus TCP communications. Because Modbus does not provide encryption, authentication, or integrity protection, an attacker with network access can observe industrial process data in transit.
+This attack demonstrates a major weakness of Modbus TCP communications. Because Modbus does not provide encryption, authentication, or integrity verification, sensitive operational information can be exposed to anyone capable of intercepting network traffic.
 
-Potential impacts include:
+Potential risks include:
 
-- Monitoring operational process values
-- Identifying PLC register mappings
-- Gathering information for future attacks
-- Manipulating process data if additional access is obtained
-- Disrupting industrial operations through unauthorized control actions
+* Monitoring industrial process values
+* Identifying PLC register mappings
+* Gathering intelligence for future attacks
+* Manipulating process values in transit
+* Disrupting industrial control processes
 
 ---
 
 ## Conclusion
 
+Attack 3 successfully demonstrated the interception and analysis of Modbus TCP communications between an HMI and PLC. By positioning the Kali Linux system between the communicating devices, network traffic was captured and inspected using Wireshark. The intercepted Modbus packet revealed Register 0 containing a value of 25, which directly matched the 25% water level displayed on the HMI. This attack highlights the security risks associated with legacy industrial protocols that lack encryption and authentication mechanisms.
