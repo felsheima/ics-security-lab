@@ -42,7 +42,7 @@ Analysis of the captured packets revealed Modbus requests and responses containi
 
 ### Figure 1 – Captured Modbus Traffic
 
-![Figure 1](..screenshots/attack3-figure1-wireshark-image.png)
+![Figure 1](../screenshots/attack3-figure1-wireshark-image.png)
 
 *Wireshark capture showing Modbus traffic exchanged between the HMI and PLC.*
 
@@ -58,7 +58,7 @@ This demonstrated that process values were being transmitted across the network 
 
 ### Figure 3 – HMI Display
 
-![Figure 3](..screenshots/attack3-waterlevel25.png)
+![Figure 3](../screenshots/attack3-waterlevel25.png)
 
 *AdvancedHMI displaying a water level of 25%, matching the value observed within the Modbus packet capture.*
 
