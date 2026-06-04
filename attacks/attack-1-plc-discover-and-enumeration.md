@@ -37,10 +37,6 @@ The scan did not return any active hosts. This demonstrated an important lesson:
 
 *Identifying local network information using the `ip a` command.*
 
-### Figure 2
-
-![Figure 2 - Host Discovery](../screenshots/attack1-figure2-host-discovery.png)
-
 *Host discovery scan returning no results, demonstrating the limitations of ICMP-based discovery.*
 
 ---
